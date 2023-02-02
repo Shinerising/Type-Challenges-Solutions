@@ -13,4 +13,4 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type MinusOne<T extends number, A extends unknown[] = []> = T extends 0 ? -1 : [1, ...A]["length"] extends T ? A["length"] : MinusOne<T, [1, ...A]>
+type MinusOne<T extends number, U extends unknown[] = []> = T extends 0 ? -1 : T extends U['length'] ? U[0] : MinusOne<T,[U['length'], ...U]>

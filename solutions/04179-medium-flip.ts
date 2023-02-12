@@ -10,6 +10,4 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type KeyValue<T, K extends keyof T = keyof T> = 
-type Flip<T> = { [K in keyof KeyValue<T>] : KeyValue<T>[K][0] }
-type a = Flip<{ pi: 'a' }>
+type Flip<T> = { [K in keyof T as T[K] extends string | number | symbol ? T[K] : T[K] extends true ? 'true' : 'false']: K }

@@ -17,4 +17,6 @@ type cases = [
 
 
 // ============= Your Code Here =============
-declare function Currying(fn: any): any
+type CurryingType<T extends Function> =
+ T extends (...args: infer U) => infer R ? U extends [infer A, ...infer B] ? (a: A) => CurryingType<(...args: B) => R> : R : never
+declare function Currying<T extends Function>(fn: T): T extends () => infer _R ? T : CurryingType<T>

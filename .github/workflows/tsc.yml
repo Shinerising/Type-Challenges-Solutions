@@ -1,4 +1,6 @@
 # Use tsc on solutions
+name: Typescript Check
+
 on:
   push:
   pull_request:

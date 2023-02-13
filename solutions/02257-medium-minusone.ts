@@ -13,4 +13,19 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type MinusOne<T extends number, U extends unknown[] = []> = T extends 0 ? -1 : T extends U['length'] ? U[0] : MinusOne<T,[U['length'], ...U]>
+type StringMinusOne<T> =
+  T extends '10' ? '9' : 
+  T extends number ?
+    `${T}` extends `${infer A}9` ? `${A}8` :
+    `${T}` extends `${infer A}8` ? `${A}7` :
+    `${T}` extends `${infer A}7` ? `${A}6` :
+    `${T}` extends `${infer A}6` ? `${A}5` :
+    `${T}` extends `${infer A}5` ? `${A}4` :
+    `${T}` extends `${infer A}4` ? `${A}3` :
+    `${T}` extends `${infer A}3` ? `${A}2` :
+    `${T}` extends `${infer A}2` ? `${A}1` :
+    `${T}` extends `${infer A}1` ? `${A}0` :
+    `${T}` extends `${infer A}0` ? `${StringMinusOne<A>}9` : 
+     never : never
+type ParseInt<T extends string> = T extends `${infer D extends number}` ? D : never;
+type MinusOne<T> =T extends 1 ? 0 : T extends 0 ? -1 : ParseInt<StringMinusOne<T>>;

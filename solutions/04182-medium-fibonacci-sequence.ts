@@ -10,7 +10,7 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type ToArray<T extends number, U extends unknown[] = []> = T extends U['length'] ? [T, ...U] : ToArray<T,[U['length'], ...U]>
+type ToArray<T extends number, U extends number[] = []> = U['length'] extends T ? [T, ...U] : ToArray<T,[U['length'], ...U]>
 type Length<T extends number[]> = T['length']
-type Fragment<T extends number[]> = T[0] extends 0 ? [] : T[0] extends 1 ? [1] : T extends [unknown, infer B extends number, ...infer R extends number[]] ? [...Fragment<[B,...R]>, ...Fragment<R>] : never
-type Fibonacci<T extends number> = Length<Fragment<ToArray<T>>>
+type Fragment<T extends number[], U extends number> = U extends 0 ? [] : U extends 1 ? [1] : T extends [unknown, infer B extends number, ...infer R extends number[]] ? [...Fragment<[B,...R], B>, ...Fragment<R, R[0]>] : never
+type Fibonacci<T extends number, U extends number[] = ToArray<T>> = Length<Fragment<U, T>>

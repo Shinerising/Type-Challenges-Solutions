@@ -1,0 +1,153 @@
+// ============= Test Cases =============
+import type { Equal, Expect } from './test-utils'
+
+type cases = [
+  Expect<Equal<FizzBuzz<1>, ['1']>>,
+  Expect<Equal<FizzBuzz<5>, ['1', '2', 'Fizz', '4', 'Buzz']>>,
+  Expect<Equal<FizzBuzz<20>, [
+    '1',
+    '2',
+    'Fizz',
+    '4',
+    'Buzz',
+    'Fizz',
+    '7',
+    '8',
+    'Fizz',
+    'Buzz',
+    '11',
+    'Fizz',
+    '13',
+    '14',
+    'FizzBuzz',
+    '16',
+    '17',
+    'Fizz',
+    '19',
+    'Buzz',
+  ]>>,
+  Expect<Equal<FizzBuzz<100>, [
+    '1',
+    '2',
+    'Fizz',
+    '4',
+    'Buzz',
+    'Fizz',
+    '7',
+    '8',
+    'Fizz',
+    'Buzz',
+    '11',
+    'Fizz',
+    '13',
+    '14',
+    'FizzBuzz',
+    '16',
+    '17',
+    'Fizz',
+    '19',
+    'Buzz',
+    'Fizz',
+    '22',
+    '23',
+    'Fizz',
+    'Buzz',
+    '26',
+    'Fizz',
+    '28',
+    '29',
+    'FizzBuzz',
+    '31',
+    '32',
+    'Fizz',
+    '34',
+    'Buzz',
+    'Fizz',
+    '37',
+    '38',
+    'Fizz',
+    'Buzz',
+    '41',
+    'Fizz',
+    '43',
+    '44',
+    'FizzBuzz',
+    '46',
+    '47',
+    'Fizz',
+    '49',
+    'Buzz',
+    'Fizz',
+    '52',
+    '53',
+    'Fizz',
+    'Buzz',
+    '56',
+    'Fizz',
+    '58',
+    '59',
+    'FizzBuzz',
+    '61',
+    '62',
+    'Fizz',
+    '64',
+    'Buzz',
+    'Fizz',
+    '67',
+    '68',
+    'Fizz',
+    'Buzz',
+    '71',
+    'Fizz',
+    '73',
+    '74',
+    'FizzBuzz',
+    '76',
+    '77',
+    'Fizz',
+    '79',
+    'Buzz',
+    'Fizz',
+    '82',
+    '83',
+    'Fizz',
+    'Buzz',
+    '86',
+    'Fizz',
+    '88',
+    '89',
+    'FizzBuzz',
+    '91',
+    '92',
+    'Fizz',
+    '94',
+    'Buzz',
+    'Fizz',
+    '97',
+    '98',
+    'Fizz',
+    'Buzz',
+  ]>>,
+]
+
+
+// ============= Your Code Here =============
+type AddBuzz<S, F extends string> = S extends F ? `${S}Buzz` : `Buzz`
+type ToArray<N extends number, A extends unknown[] = [], C = [...A, 1]['length']> = A['length'] extends N ? A : C extends number ? ToArray<N, [...A, `${C}`]> : never
+type Fizz<A extends unknown[], U extends unknown[] = []> =
+  A extends [infer N1, infer N2, infer N3, ...infer R] ?
+  Fizz<R, [...U, ...[N1, N2, 'Fizz']]> : 
+  A['length'] extends 3 ? [...U, A[0], A[1], 'Fizz'] :
+  A['length'] extends 2 ? [...U, A[0], A[1]] :
+  A['length'] extends 1 ? [...U, A[0]] :
+  A['length'] extends 0 ? U : never
+type Buzz<A extends unknown[], U extends unknown[] = []> =
+  A extends [infer N1, infer N2, infer N3, infer N4, infer N5, ...infer R] ?
+  Buzz<R, [...U, ...[N1, N2, N3, N4, AddBuzz<N5, 'Fizz'>]]> : 
+  A['length'] extends 5 ? [...U, A[0], A[1], A[2], A[3], AddBuzz<A[4], 'Fizz'>] :
+  A['length'] extends 4 ? [...U, A[0], A[1], A[2], A[3]] :
+  A['length'] extends 3 ? [...U, A[0], A[1], A[2]] :
+  A['length'] extends 2 ? [...U, A[0], A[1]] :
+  A['length'] extends 1 ? [...U, A[0]] :
+  A['length'] extends 0 ? U : never
+type FizzBuzz<N extends number> = Buzz<Fizz<ToArray<N>>>

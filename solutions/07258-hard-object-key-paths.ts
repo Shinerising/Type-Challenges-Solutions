@@ -46,13 +46,9 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type ObjectKeyPaths<T, P extends string = ''> = 
-  T extends [infer A, ...infer B] ? P extends '' ? ObjectKeyPaths<T[K], `${K}`> : ObjectKeyPaths<T[K], P | `${P}.${K}`> :
-  Exclude<
-  T extends object ? {
-  [K in keyof T]: K extends string ? T[K] extends object ?
-    P extends '' ? ObjectKeyPaths<T[K], `${K}`> : ObjectKeyPaths<T[K], P | `${P}.${K}`> :
-    P extends '' ? `${K}` : P | `${P}.${K}` : never
-  }[keyof T] : never, Function | number>
-type d = typeof ref
-type a = ObjectKeyPaths<string[]>
+type ObjectKeyPaths<T extends unknown, K extends keyof T = keyof T> = T extends object | unknown[]
+  ? K extends keyof T & (string | number) ?
+   `${T extends unknown[] ?
+     `[${K}]` | K : K}${ '' | `${T[K] extends unknown[] ? '' | '.' : '.' }${ObjectKeyPaths<T[K]>}`}`
+    : never
+  : never

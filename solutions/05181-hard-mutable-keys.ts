@@ -10,10 +10,4 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type IsReadonly<T> = T extends any ? [T] extends [Readonly<T>] ? true : false : false
-type MutableKeys<T> = {
-  [K in keyof T as IsReadonly<K> extends true ? K : never]: T[K]
-}
-type c = { a: number; readonly b: string }
-type d = IsReadonly<c>
-type a = MutableKeys<{ a: number; readonly b: string }>
+type MutableKeys<T> = keyof { [K in keyof T as Equal<Pick<T, K>, Readonly<Pick<T, K>>> extends true ? never : K]: T[K] }

@@ -44,7 +44,7 @@ type Computed<T> = {
 }
 type Options<D, C, M> = {
   data?: () => D
-  computed?: C & ThisType<D & Computed<C> & M>
+  computed?: C & ThisType<D & Computed<C>>
   methods?: M & ThisType<D & Computed<C> & M>
 }
 declare function SimpleVue<D, C, M>(options: Options<D, C, M>): any

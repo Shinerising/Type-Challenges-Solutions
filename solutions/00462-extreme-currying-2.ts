@@ -38,9 +38,5 @@ type cases = [
 
 
 // ============= Your Code Here =============
-type SubArray<A extends unknown[], U extends unknown[][] = []> = A extends [infer F, ...infer R] ? SubArray<R, U['length'] extends 0 ? [[F]] : [[...U[0], F], ...U]> : U
-type ExcludeArray<A extends unknown[], U extends unknown[] = []> = U extends [...A, ...infer R extends unknown[]] ? R : []
-type CurringType<A extends unknown[], U extends any[], R extends any, T extends unknown[] = ExcludeArray<U, A>> = A['length'] extends 0 ? R : (...args: U) => CurringType<T, SubArray<T>, R>
-declare function DynamicParamsCurrying<T extends Function>(fn: T): T extends (...args:infer A) => infer R ? CurringType<A, SubArray<A>[number], R> : never
-const a = curried1
-type b = ExcludeArray<[1] | [1,2],[1,2,3]>
+type Currying<P, S> = P extends [infer _X, ...infer _R] ? <T extends any[]>(...arg: T) => Currying<P extends [...T, ...infer A] ? A : never, S> : S
+declare function DynamicParamsCurrying<Fn extends (...arg: any) => any>(fn: Fn): Fn extends (...arg: infer P) => ReturnType<Fn> ? Currying<P,ReturnType<Fn>> : never
